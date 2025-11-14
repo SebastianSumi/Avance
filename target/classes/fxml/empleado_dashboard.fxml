@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pe.edu.upeu.asistencia.controller.EmpleadoDashboardController"
+            prefWidth="950" prefHeight="650">
+
+    <!-- Header -->
+    <top>
+        <VBox styleClass="header">
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+                <padding>
+                    <Insets top="15" right="20" bottom="15" left="20"/>
+                </padding>
+
+                <Label text=" Mi Panel">
+                    <font>
+                        <Font name="System Bold" size="20.0"/>
+                    </font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="lblUsuario" text="Empleado: "/>
+                <Label fx:id="lblMensajesNoLeidos" text="Mensajes: 0" styleClass="badge"/>
+                <Button text=" Cerrar Sesión" onAction="#handleCerrarSesion" styleClass="btn-secondary"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Content con TabPane -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- Tab Mi Perfil -->
+            <Tab text="👤 Mi Perfil">
+                <ScrollPane fitToWidth="true" fitToHeight="true">
+                    <VBox spacing="20.0" alignment="TOP_CENTER">
+                        <padding>
+                            <Insets top="30" right="40" bottom="30" left="40"/>
+                        </padding>
+
+                        <!-- Información Personal -->
+                        <VBox spacing="15" alignment="CENTER" styleClass="info-box">
+                            <Label text="Información Personal">
+                                <font>
+                                    <Font name="System Bold" size="18.0"/>
+                                </font>
+                            </Label>
+
+                            <GridPane hgap="15" vgap="12" maxWidth="500">
+                                <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="label-bold"/>
+                                <Label fx:id="lblNombre" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                <Label text="Usuario:" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="label-bold"/>
+                                <Label fx:id="lblUsername" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                <Label text="Rol:" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="label-bold"/>
+                                <Label fx:id="lblRol" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            </GridPane>
+                        </VBox>
+
+                        <Separator maxWidth="500"/>
+
+                        <!-- Registrar Asistencia -->
+                        <VBox spacing="12" alignment="CENTER" styleClass="asistencia-box">
+                            <Label text=" Registrar Asistencia de Hoy">
+                                <font>
+                                    <Font name="System Bold" size="16.0"/>
+                                </font>
+                            </Label>
+
+                            <HBox spacing="20" alignment="CENTER">
+                                <Label fx:id="lblFechaHoy" text="Fecha: ">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblHoraActual" text="Hora: ">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                </Label>
+                            </HBox>
+
+                            <!-- BOTONES DE ENTRADA Y SALIDA -->
+                            <HBox spacing="15" alignment="CENTER">
+                                <Button fx:id="btnMarcarAsistencia" text=" Marcar Entrada"
+                                        onAction="#handleMarcarAsistencia"
+                                        style="-fx-background-color: #48bb78; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"
+                                        prefWidth="180" prefHeight="40">
+                                    <font>
+                                        <Font name="System Bold" size="14.0"/>
+                                    </font>
+                                </Button>
+
+                                <Button fx:id="btnRegistrarSalida" text="🏁 Registrar Salida"
+                                        onAction="#handleRegistrarSalida"
+                                        style="-fx-background-color: #f59e0b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"
+                                        prefWidth="180" prefHeight="40">
+                                    <font>
+                                        <Font name="System Bold" size="14.0"/>
+                                    </font>
+                                </Button>
+                            </HBox>
+
+                            <Label fx:id="lblMensajeAsistencia" styleClass="success-label"
+                                   visible="false" wrapText="true"/>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+
+            <!-- Tab Mis Asistencias -->
+            <Tab text=" Mis Asistencias">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Label text="Ver asistencias de:">
+                            <font>
+                                <Font name="System Bold" size="13.0"/>
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="cboPeriodo" promptText="Seleccione período" prefWidth="150"/>
+                        <Button text=" Buscar" onAction="#handleBuscarMisAsistencias"/>
+                    </HBox>
+
+                    <TableView fx:id="tableMisAsistencias" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colMiAsistFecha" text="Fecha" prefWidth="120"/>
+                            <TableColumn fx:id="colMiAsistEntrada" text="Hora Entrada" prefWidth="120"/>
+                            <TableColumn fx:id="colMiAsistSalida" text="Hora Salida" prefWidth="120"/>
+                            <TableColumn fx:id="colMiAsistEstado" text="Estado" prefWidth="100"/>
+                            <TableColumn fx:id="colMiAsistObs" text="Observaciones" prefWidth="250"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- Resumen Estadístico -->
+                    <Separator/>
+                    <Label text="Resumen de Asistencias:">
+                        <font>
+                            <Font name="System Bold" size="14.0"/>
+                        </font>
+                    </Label>
+                    <HBox spacing="20.0" alignment="CENTER">
+                        <Label fx:id="lblTotalPresente" text="✓ Presente: 0" styleClass="stat-label"
+                               style="-fx-background-color: #d4edda; -fx-text-fill: #155724; -fx-padding: 8;"/>
+                        <Label fx:id="lblTotalTarde" text="⚠ Tarde: 0" styleClass="stat-label"
+                               style="-fx-background-color: #fff3cd; -fx-text-fill: #856404; -fx-padding: 8;"/>
+                        <Label fx:id="lblTotalAusente" text="✗ Ausente: 0" styleClass="stat-label"
+                               style="-fx-background-color: #f8d7da; -fx-text-fill: #721c24; -fx-padding: 8;"/>
+                        <Label fx:id="lblTotalJustificado" text="ℹ Justificado: 0" styleClass="stat-label"
+                               style="-fx-background-color: #d1ecf1; -fx-text-fill: #0c5460; -fx-padding: 8;"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- Tab Mis Vacaciones -->
+            <Tab text=" Mis Vacaciones">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Button text=" Solicitar Vacaciones" onAction="#handleSolicitarVacaciones"
+                                style="-fx-background-color: #48bb78; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text=" Actualizar" onAction="#handleActualizarVacaciones"/>
+                    </HBox>
+
+                    <TableView fx:id="tableMisVacaciones" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colVacFechaInicio" text="Fecha Inicio" prefWidth="120"/>
+                            <TableColumn fx:id="colVacFechaFin" text="Fecha Fin" prefWidth="120"/>
+                            <TableColumn fx:id="colVacDias" text="Días" prefWidth="60"/>
+                            <TableColumn fx:id="colVacEstado" text="Estado" prefWidth="100"/>
+                            <TableColumn fx:id="colVacFechaSolicitud" text="Fecha Solicitud" prefWidth="150"/>
+                            <TableColumn fx:id="colVacAcciones" text="Acciones" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+
+                    <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 5;">
+                        <Label text="ℹ Estado de solicitudes:" style="-fx-font-weight: bold;"/>
+                        <Label text=" PENDIENTE: En espera de aprobación"/>
+                        <Label text=" APROBADA: Solicitud aceptada"/>
+                        <Label text=" RECHAZADA: Solicitud denegada"/>
+                    </VBox>
+                </VBox>
+            </Tab>
+
+           <!-- Tab Mis Mensajes -->
+           <Tab text="✉ Mis Mensajes">
+               <VBox spacing="15.0">
+                   <padding>
+                       <Insets top="20" right="20" bottom="20" left="20"/>
+                   </padding>
+
+                   <!-- BOTONES ACTUALIZADOS CON NUEVO MENSAJE -->
+                   <HBox spacing="10.0">
+                       <Button text=" Nuevo Mensaje" onAction="#handleNuevoMensaje"
+                               style="-fx-background-color: #48bb78; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+                       <Button text=" Actualizar" onAction="#handleActualizarMensajes"/>
+                       <Button text="✓ Marcar todos como leídos" onAction="#handleMarcarTodosLeidos"/>
+                   </HBox>
+
+                   <TableView fx:id="tableMisMensajes" VBox.vgrow="ALWAYS" prefHeight="300">
+                       <columns>
+                           <TableColumn fx:id="colMiMsjEmisor" text="De" prefWidth="180"/>
+                           <TableColumn fx:id="colMiMsjAsunto" text="Asunto" prefWidth="300"/>
+                           <TableColumn fx:id="colMiMsjFecha" text="Fecha" prefWidth="150"/>
+                           <TableColumn fx:id="colMiMsjLeido" text="Leído" prefWidth="60"/>
+                       </columns>
+                   </TableView>
+
+                   <!-- Área para mostrar contenido del mensaje -->
+                   <VBox spacing="10.0" style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 5;">
+                       <Label text="📄 Contenido del mensaje:" style="-fx-font-weight: bold;"/>
+                       <TextArea fx:id="txtMensajeContenido" wrapText="true" editable="false"
+                                 prefHeight="150" promptText="Seleccione un mensaje para ver su contenido"
+                                 style="-fx-border-color: #dee2e6;"/>
+                   </VBox>
+
+                   <Label text=" Tip: Ahora puedes enviar mensajes al administrador y a tus compañeros empleados"
+                          style="-fx-text-fill: #48bb78; -fx-font-style: italic; -fx-font-weight: bold;"/>
+               </VBox>
+           </Tab>
+        </TabPane>
+    </center>
+
+    <!-- Footer -->
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-background-color: #edf2f7; -fx-padding: 10;">
+            <Label text="Sistema de Asistencia v1.0 | © 2024" style="-fx-text-fill: #718096; -fx-font-size: 11px;"/>
+        </HBox>
+    </bottom>
+</BorderPane>
