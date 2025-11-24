@@ -1,5 +1,10 @@
 package pe.edu.upeu.asistencia.service;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import pe.edu.upeu.asistencia.dto.ResumenAsistenciaDTO;
 import pe.edu.upeu.asistencia.enums.EstadoAsistencia;
 import pe.edu.upeu.asistencia.enums.Rol;
@@ -12,15 +17,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 @Transactional
 public class AsistenciaService {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     private AsistenciaRepository asistenciaRepository;
@@ -29,6 +43,7 @@ public class AsistenciaService {
     private UsuarioRepository usuarioRepository;
     
     public Asistencia registrarAsistencia(Usuario usuario) {
+
         if (yaRegistroHoy(usuario)) {
             throw new RuntimeException("Ya existe un registro de asistencia para hoy");
         }
@@ -228,6 +243,52 @@ public class AsistenciaService {
                 return "Justificado";
             default:
                 return "Estado desconocido";
+        }
+    }
+
+    // Método para obtener archivos desde resources
+    private File getFile(String filename) throws IOException {
+        Resource resource = new ClassPathResource(filename);
+        return resource.getFile();
+    }
+
+
+    public JasperPrint runReport() throws JRException, IOException {
+
+        HashMap<String, Object> param = new HashMap<>();
+
+        // Cargar el diseño del informe
+        JasperDesign jdesign = JRXmlLoader.load(getFile("jasper/resumen_asis.jrxml"));
+        JasperReport jreport = JasperCompileManager.compileReport(jdesign);
+
+        Connection conn = null;
+        try {
+            // Obtener conexión directamente del DataSource
+            conn = dataSource.getConnection();
+
+            // Configurar SQLite para mejor rendimiento
+            try (var stmt = conn.createStatement()) {
+                stmt.execute("PRAGMA journal_mode=WAL");
+                stmt.execute("PRAGMA synchronous=NORMAL");
+                stmt.execute("PRAGMA cache_size=10000");
+            }
+
+            // Llenar el reporte
+            return JasperFillManager.fillReport(jreport, param, conn);
+
+        } catch (SQLException e) {
+            throw new JRException("Error de base de datos al generar reporte", e);
+        } finally {
+            // Cerrar conexión explícitamente
+            if (conn != null) {
+                try {
+                    if (!conn.isClosed()) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error al cerrar conexión: " + e.getMessage());
+                }
+            }
         }
     }
 }

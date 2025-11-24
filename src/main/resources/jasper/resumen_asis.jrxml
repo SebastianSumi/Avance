@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumen_asis" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e11cead6-d4a5-4118-9c39-77bb52ee03d7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="asistenciafinalDB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString language="SQL">
+		<![CDATA[select u.x, u.nombreEmpleado, a1.canT, a2.canP , a3.canA , a4.canJ from (
+SELECT
+    u.id as x,
+    u.nombre AS nombreEmpleado
+FROM usuario u
+) u left join (
+    select u.id as x,a.id as t, count(*) canT from asistencia a, usuario u
+     where a.usuario_id=u.id and a.estado='TARDE'
+     group by u.id
+)  a1 on (u.x=a1.x) left join (
+    select u.id as x, a.id as t, count(*) canP from asistencia a, usuario u
+    where a.usuario_id=u.id and a.estado='PRESENTE'
+    group by u.id
+)  a2 on (u.x=a2.x) left join (
+    select u.id as x, a.id as t, count(*) canA from asistencia a, usuario u
+    where a.usuario_id=u.id and a.estado='AUSENTE'
+    group by u.id
+)  a3 on (u.x=a3.x) left join (
+    select u.id as x,a.id as t, count(*) canJ from asistencia a, usuario u
+    where a.usuario_id=u.id and a.estado='JUSTIFICADO'
+    group by u.id
+)  a4 on (u.x=a4.x)]]>
+	</queryString>
+	<field name="x" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="x"/>
+		<property name="com.jaspersoft.studio.field.label" value="x"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="nombreEmpleado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreEmpleado"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreEmpleado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="canT" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.name" value="canT"/>
+		<property name="com.jaspersoft.studio.field.label" value="canT"/>
+	</field>
+	<field name="canP" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="canP"/>
+		<property name="com.jaspersoft.studio.field.label" value="canP"/>
+	</field>
+	<field name="canA" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.name" value="canA"/>
+		<property name="com.jaspersoft.studio.field.label" value="canA"/>
+	</field>
+	<field name="canJ" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="canJ"/>
+		<property name="com.jaspersoft.studio.field.label" value="canJ"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="150" y="20" width="300" height="30" uuid="3c5a9cd1-e89c-4b39-b2a8-2c166a0db7c3"/>
+				<textFieldExpression><![CDATA["RESUMEN DE ASISTENCIA"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="25" uuid="79f01fc2-34bd-4323-a07e-f3305c18528a"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="200" height="25" uuid="eeee5ba9-1043-4893-b630-6a9558dbe6a7"/>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="0" width="80" height="25" uuid="f904cde4-fc18-470a-b952-77661a43d81a"/>
+				<text><![CDATA[TARDE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="80" height="25" uuid="9e6cd18e-05cf-4648-bc08-d800c55176e2"/>
+				<text><![CDATA[PRESENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="80" height="25" uuid="fce150a9-3d71-4306-b7d8-9230e0afae14"/>
+				<text><![CDATA[AUSENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="80" height="25" uuid="c1fea270-31af-4de7-9eb9-251d7a736da4"/>
+				<text><![CDATA[JUSTIF.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+    <detail>
+        <band height="20" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="40" height="20"/>
+                <textFieldExpression><![CDATA[$F{x}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="40" y="0" width="200" height="20"/>
+                <textFieldExpression><![CDATA[$F{nombreEmpleado}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="240" y="0" width="80" height="20"/>
+                <textFieldExpression><![CDATA[$F{canT}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="320" y="0" width="80" height="20"/>
+                <textFieldExpression><![CDATA[$F{canP}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="400" y="0" width="80" height="20"/>
+                <textFieldExpression><![CDATA[$F{canA}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="0" width="80" height="20"/>
+                <textFieldExpression><![CDATA[$F{canJ}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <columnFooter>
+		<band height="5"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30">
+			<textField>
+				<reportElement x="200" y="5" width="200" height="20" uuid="858c5b5a-2f81-4b4b-b865-073fd0f5f050"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="30"/>
+	</summary>
+</jasperReport>

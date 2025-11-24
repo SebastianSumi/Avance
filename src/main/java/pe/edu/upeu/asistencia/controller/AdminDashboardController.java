@@ -100,6 +100,7 @@ public class AdminDashboardController {
     @FXML private Label lblTotalEmpleados;
     @FXML private Label lblPromedioAsistencia;
     @FXML private Label lblTotalRegistros;
+    @FXML private Button btnGenerarReporteAsistencias;
 
     @Autowired private SolicitudVacacionService solicitudVacacionService;
     @Autowired private UsuarioService usuarioService;
@@ -138,7 +139,6 @@ public class AdminDashboardController {
         configurarBusquedas();
     }
 
-    // ==================== CONFIGURACIÓN DE BÚSQUEDAS ====================
 
     private void configurarBusquedas() {
         // Búsqueda de usuarios
@@ -211,7 +211,6 @@ public class AdminDashboardController {
         }
     }
 
-    // ==================== CONFIGURACIÓN DE TABLAS ====================
 
     private void configurarTablaUsuarios() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -395,7 +394,6 @@ public class AdminDashboardController {
         }
     }
 
-    // ==================== CARGAR DATOS ====================
 
     private void cargarUsuarios() {
         usuarios.clear();
@@ -418,7 +416,6 @@ public class AdminDashboardController {
         solicitudesVacacion.addAll(solicitudVacacionService.listarTodas());
     }
 
-    // ==================== CRUD USUARIOS ====================
 
     @FXML
     private void handleNuevoUsuario() {
@@ -484,8 +481,28 @@ public class AdminDashboardController {
             mostrarAlerta("Error", "No se pudo abrir el formulario", Alert.AlertType.ERROR);
         }
     }
+    @FXML
+    private void handleGenerarReporteAsistencia(){
 
-    // ==================== ASISTENCIAS ====================
+        try {
+            JasperPrint jasperPrint = asistenciaService.runReport();
+
+            // Guardar como PDF
+            String outputFile = System.getProperty("user.home") + "/Desktop/Reporte_Asistencia.pdf";
+
+            JasperExportManager.exportReportToPdfFile(jasperPrint, outputFile);
+
+            // Abrir el archivo PDF
+            openPDFFile(outputFile);
+
+            mostrarAlerta("Éxito", "Reporte generado en: " + outputFile, Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo generar el reporte: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
 
     @FXML
     private void handleRegistrarAsistencia() {
@@ -532,7 +549,6 @@ public class AdminDashboardController {
         }
     }
 
-    // ==================== MENSAJES ====================
 
     @FXML
     private void handleNuevoMensaje() {
@@ -601,7 +617,6 @@ public class AdminDashboardController {
         mostrarAlerta("Éxito", "Mensaje eliminado", Alert.AlertType.INFORMATION);
     }
 
-    // ==================== VACACIONES ====================
 
     @FXML
     private void handleAprobarVacacion() {

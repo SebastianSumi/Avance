@@ -100,6 +100,7 @@
                             <Label styleClass="label-bold" text="Total Registros" />
                             <Label fx:id="lblTotalRegistros" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="0" />
                         </VBox>
+                  <Button fx:id="btnGenerarReporteAsistencias" layoutX="400.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleGenerarReporteAsistencia" prefHeight="70.0" prefWidth="160.0" text="Gennerar Reporte de Asistencias" textAlignment="CENTER" wrapText="true" />
                     </HBox>
 
 
