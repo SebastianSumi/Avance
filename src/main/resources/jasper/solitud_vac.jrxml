@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitud_permiso" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9704355f-b35c-4be9-85fa-0da040bd5b37">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="asitencia"/>
+	<parameter name="imagenurl" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="idSolicitud" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT 
+   s.id,
+   e.nombre AS empleado,
+   s.motivo,
+   s.fecha_solicitud,
+   s.fecha_inicio,
+   s.fecha_fin,
+   s.dias_solicitados
+FROM solicitudes_vacacion s
+JOIN usuario e ON s.empleado_id = e.id
+WHERE s.id = $P{idSolicitud}]]>
+	</queryString>
+	<field name="id" class="java.lang.Object"/>
+	<field name="empleado" class="java.lang.Object"/>
+	<field name="motivo" class="java.lang.Object"/>
+	<field name="fecha_solicitud" class="java.lang.Object"/>
+	<field name="fecha_inicio" class="java.lang.Object"/>
+	<field name="fecha_fin" class="java.lang.Object"/>
+	<field name="dias_solicitados" class="java.lang.Object"/>
+	<title>
+		<band height="120">
+			<image>
+				<reportElement x="0" y="0" width="80" height="80" uuid="ae4cf64e-e0b7-401f-ac33-6098a365e155"/>
+				<imageExpression><![CDATA[$P{imagenurl}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="100" y="10" width="400" height="30" uuid="676e477a-5a28-47ac-96a5-bf714b6a1a32"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE PERMISO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="50" width="250" height="20" uuid="fb151329-0e5f-433e-960c-4a5ba313d616"/>
+				<textFieldExpression><![CDATA["ID de Solicitud: " + $F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="70" width="350" height="20" uuid="fa87c8c8-2029-4c72-9b51-532d8a1a3121"/>
+				<textFieldExpression><![CDATA["Juliaca, Fecha: " + 
+new java.text.SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy 'a las' HH:mm").format($F{fecha_solicitud})]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="380">
+			<staticText>
+				<reportElement x="0" y="10" width="300" height="20" uuid="3198a63c-a7e0-462f-9b4d-84387b63d1bd"/>
+				<text><![CDATA[Destinatario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="300" height="20" uuid="61f3582a-4fd4-4a32-8ee2-bec7e3888cea"/>
+				<text><![CDATA[A la administración]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="300" height="20" uuid="04dbe22f-bcab-457e-9607-0e9e26070c51"/>
+				<text><![CDATA[Presente. –]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="100" width="550" height="200" uuid="86d98e09-ce7f-4794-9d6f-780f13096eef"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Por medio de la presente, yo, " + $F{empleado} +
+", solicito de la manera más respetuosa un permiso laboral por el siguiente motivo:\n\n\"" +
+$F{motivo} + "\"\n\nDicho permiso comprende desde el día " +
+new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{fecha_inicio}) +
+" hasta el día " +
+new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{fecha_fin}) +
+", teniendo una duración total de " +
+$F{dias_solicitados} + " día(s).\n\n" +
+"Me comprometo, de ser necesario, a compensar el tiempo correspondiente según lo disponga la administración."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="160">
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="20" uuid="f380a8f4-927b-4181-addd-5e83fb77c115"/>
+				<text><![CDATA[Sin otro particular, agradezco su atención.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="550" height="20" uuid="aa5cad1b-de6a-4dea-a077-92a85576df26"/>
+				<text><![CDATA[Atentamente,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="200" height="20" uuid="c7513afb-d1f4-4e7a-a254-264db4f8f3ce"/>
+				<text><![CDATA[__________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="200" height="20" uuid="5753858c-52af-4573-a9a9-0cfa1730c4d9"/>
+				<text><![CDATA[Firma del solicitante]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="110" width="300" height="20" uuid="12e08bb8-c951-4826-8578-5c1726eb5732"/>
+				<textFieldExpression><![CDATA["Nombre: " + $F{empleado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="130" width="300" height="20" uuid="fc80fef0-e978-47e8-a64e-b90b2dc364dc"/>
+				<textFieldExpression><![CDATA["Fecha: " + 
+new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format($F{fecha_solicitud})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="70" width="200" height="20" uuid="ab0c5050-6a81-4447-b108-22bbc1a64c81"/>
+				<text><![CDATA[__________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="90" width="200" height="20" uuid="96bf414c-39cb-49b2-a269-77c3d2631fb1"/>
+				<text><![CDATA[Firma de aprobación]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

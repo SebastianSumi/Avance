@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_solicitudes_vacacion" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b48bb40c-a078-4608-8074-eb5c40be2cf0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="asitencia"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="imagenurl" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+    s.id,
+    e.nombre AS nombre_empleado,
+    s.fecha_solicitud,
+    s.fecha_inicio,
+    s.fecha_fin,
+    s.estado,
+    s.dias_solicitados
+FROM solicitudes_vacacion s
+JOIN usuario e ON s.empleado_id = e.id
+ORDER BY s.fecha_solicitud ASC]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+	</field>
+	<field name="nombre_empleado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_empleado"/>
+	</field>
+	<field name="fecha_solicitud" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_solicitud"/>
+	</field>
+	<field name="fecha_inicio" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_inicio"/>
+	</field>
+	<field name="fecha_fin" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_fin"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+	</field>
+	<field name="dias_solicitados" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="dias_solicitados"/>
+	</field>
+	<variable name="totalDias" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{dias_solicitados}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<image>
+				<reportElement x="10" y="0" width="85" height="30" uuid="69705419-37b8-4939-9735-dd368f23968f"/>
+				<imageExpression><![CDATA[$P{imagenurl}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="120" y="10" width="350" height="30" uuid="d096921d-7608-4ba3-baac-bd0dea6bf6af"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Solicitudes de Vacación]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="23">
+			<staticText>
+				<reportElement x="20" y="0" width="30" height="20" uuid="fe56a4c3-2db7-4fe5-a76c-d9ae0b8e4911"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="120" height="20" uuid="8404b177-a53c-4763-84f6-792324a617ee"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empleado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="120" height="20" uuid="e3af3fc6-4d52-4d65-8082-01675d6fbb6c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Solicitud]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="90" height="20" uuid="c1eb9d68-19eb-488f-bf10-7a28633fd13a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="90" height="20" uuid="3c4b4c03-0d87-4893-8179-5c042857b26c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Fin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="60" height="20" uuid="24836eca-36e6-4f2d-84be-da788cb387cd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="0" width="45" height="20" uuid="b40d848e-685d-4de7-a667-25b373b9df97"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Días]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="19" width="595" height="1" uuid="3eeac0d8-fe99-4565-90b2-c976367a0a4c"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="20" y="0" width="30" height="20" uuid="6324dea4-eaaa-4087-b376-36c3965194f8"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="120" height="20" uuid="ea5a79ea-83b0-48aa-a88f-02d73d5011a1"/>
+				<textFieldExpression><![CDATA[$F{nombre_empleado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="120" height="20" uuid="252d15f2-13f4-47ae-b5a6-edf15b481fa5"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format($F{fecha_solicitud})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="90" height="20" uuid="482dafef-08f7-432e-8833-e4d7b00b13a3"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{fecha_inicio})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="90" height="20" uuid="933cfa94-ac9f-47fc-bd97-b512080bad83"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{fecha_fin})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="60" height="20" uuid="178fefdf-323e-469f-93af-fc2be8d08159"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="530" y="0" width="45" height="20" uuid="1958c654-98ee-4a64-ba64-d9a6fdc6921a"/>
+				<textFieldExpression><![CDATA[$F{dias_solicitados}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="30"/>
+	</summary>
+</jasperReport>
